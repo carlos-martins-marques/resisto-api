@@ -47,7 +47,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='sonata_adapter',
+    name='resisto_api',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -71,7 +71,7 @@ setup(
     keywords='Multi domain',
 
     packages=find_packages(),
-    install_requires=['Flask==1.1.1', 'flask-restful==0.3.7', 'python-dateutil==2.8.0', 'requests==2.22.0', 'xmlrunner==1.7.7', 'pika==1.1.0', 'coloredlogs==10.0', 'MarkupSafe==1.1.1', 'jinja2==2.10.3', 'itsdangerous==1.1.0'],
+    install_requires=['Flask==1.1.1', 'flask-restful==0.3.7', 'python-dateutil==2.8.0', 'requests==2.22.0', 'xmlrunner==1.7.7', 'pika==1.1.0', 'coloredlogs==10.0', 'MarkupSafe==1.1.1', 'jinja2==2.10.3', 'itsdangerous==1.1.0', 'tornado==6.1'],
 
     #aniso8601 (8.0.0)
     #certifi (2019.11.28)
