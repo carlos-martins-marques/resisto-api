@@ -31,7 +31,7 @@
 ## partner consortium (www.5gtango.eu).
 
 
-FROM python:3.4-slim
+FROM python:3.5-slim
 LABEL organization=5GTANGO
 
 # configurations
