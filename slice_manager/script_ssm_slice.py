@@ -5,6 +5,7 @@ import logging
 import time
 import asyncio
 import requests
+import os
 
 LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.DEBUG)
@@ -23,9 +24,10 @@ liveWebSockets = {}
 
 def getStatus(serviceId):
     status=''
-    ip_address = "localhost"
+    ip_address = os.environ.get("SONATA_API")
+    port = os.environ.get("SONATA_API_PORT")
     #ip_address = "193.136.92.119"
-    port = "32002"
+    #port = "32002"
     url = "http://"+ip_address+":"+port+"/api/v3/records/services/"+serviceId
     response = requests.get(url)
     if(response.ok):
@@ -56,6 +58,7 @@ class WSHandler(websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
+    
     async def on_message(self, message):
         global data_a
         global data_c

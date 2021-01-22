@@ -46,6 +46,8 @@ ENV SONATA_REP tng-rep
 ENV SONATA_REP_PORT 4012
 ENV SONATA_CAT tng-cat
 ENV SONATA_CAT_PORT 4011
+ENV SONATA_API tng-api-gtw
+ENV SONATA_API_PORT 32002
 
 #Preparing directory
 ADD . /resisto_api
