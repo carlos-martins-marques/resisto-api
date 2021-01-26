@@ -83,6 +83,16 @@ def validate_add_slice_subnet (jsonData):
       LOG.info('FormValidator NBI_Error: ' + str(returnData))
       return (returnData, 400)
 
+# Validates the registration.
+def validate_registration (jsonData):
+  if 'sliceSubnet' in jsonData:
+    returnData["missing_field"] = "Everything is OK!!"
+    return (returnData, 200)
+  else:
+      returnData["missing_field"] = "Check if you request has a sliceSubnet."
+      LOG.info('FormValidator NBI_Error: ' + str(returnData))
+      return (returnData, 400)
+
 # Validates the handover.
 def validate_handover (jsonData):
   if 'sliceSubnetSrc' in jsonData and 'sliceSubnetDst' in jsonData:

@@ -444,7 +444,21 @@ def remove_slice_subnet(nsi_json, sliceName):
 
   return ({"message": message},202)
 
+########################################## Registration SECTION #######################################
 
+# Does all the process to registration the UE
+def registration(nsi_json, sliceName):
+  LOG.info("Registration UE")
+
+  # Change status
+  #db.update_status_slice_subnet("UNDER_REGISTRATION",nsi_json["sliceSubnet"], sliceName)
+  #TODO Order Registration
+  dict_message={"name":"api", "id":"", "action":"registration","slice":sliceName,"subnet":nsi_json["sliceSubnet"]}
+  #threading.Thread(target=client_ssm_thread,args=(dict_message,)).start()
+  message = client_ssm_thread(dict_message)
+  # Change status
+  #db.update_status_slice_subnet("FINISHED_REGISTRATION",nsi_json["sliceSubnet"], sliceName)
+  return ({"message": message},202)
 
 ########################################## HANDOVER SECTION #######################################
 

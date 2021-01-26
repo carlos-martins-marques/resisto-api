@@ -106,6 +106,20 @@ def add_slice_subnet(name):
   
   return jsonify(adding_slice_subnet[0]), adding_slice_subnet[1]
 
+# Registration
+@app.route(API_ROOT+API_VERSION+API_SLICE+'/<name>/action/registration', methods=['PUT'])
+def registration(name):
+  LOG.info("Request to registration according to the following: " + str(request.json))
+  
+  # validates the fields with uuids (if they are right UUIDv4 format), 400 Bad request / 202 ok
+  #registration = json_validator.validate_registration(request.json)
+  registration = ("", 200)
+
+  if (registration[1] == 200):
+    registration = worker.registration(request.json, name)  
+  
+  return jsonify(registration[0]), registration[1]
+
 # Handover
 @app.route(API_ROOT+API_VERSION+API_SLICE+'/<name>/action/handover', methods=['PUT'])
 def handover(name):

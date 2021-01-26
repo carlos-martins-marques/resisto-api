@@ -11,7 +11,7 @@ LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.DEBUG)
 
 names = [ 'access', 'core', 'ue' ]
-actions = [ 'registry' , 'start', 'reconfig', 'handover', 'add', 'remove' ]
+actions = [ 'registry' , 'start', 'reconfig', 'registration', 'handover', 'add', 'remove' ]
 data_a = {}
 data_c = {}
 data_u = {}
@@ -171,8 +171,29 @@ class WSHandler(websocket.WebSocketHandler):
                 data_c={}
                 data_u={}
                 ssmId={}
-        # handover
+
+        # registration
         elif action == actions[3]:
+            #TODO 
+            for sfuuid in liveWebSockets:
+                
+                toSend = { "name": "ue", "id": sfuuid, "action": "registration"}
+                toSendJson = json.dumps(toSend)
+                LOG.info(name + ": send new message to UE SSM" + toSendJson)
+
+                liveWebSockets[sfuuid].write_message(toSendJson)
+            # Get the sfuuid of UE and send the message
+            #liveWebSockets[sfuuid].write_message(message)
+
+            toSend = { "name": name, "id": id, "action": action, 
+                    "message": "Registration OK"}
+            LOG.info(name + ": tosend = " + str(toSend))
+            toSendJson = json.dumps(toSend)
+            LOG.info(name + ": send new message " + toSendJson)
+            self.write_message(toSendJson)
+
+        # handover
+        elif action == actions[4]:
             #TODO 
             for sfuuid in liveWebSockets:
                 
@@ -193,7 +214,7 @@ class WSHandler(websocket.WebSocketHandler):
             self.write_message(toSendJson)
 
         # add
-        elif action == actions[4]:
+        elif action == actions[5]:
             #TODO
             # Get the sfuuid of service and send the message
             #liveWebSockets[sfuuid].write_message(message)
@@ -205,7 +226,7 @@ class WSHandler(websocket.WebSocketHandler):
             self.write_message(toSendJson)
 
         # remove
-        elif action == actions[5]:
+        elif action == actions[6]:
             #TODO
             # Get the sfuuid of service and send the message
             #liveWebSockets[sfuuid].write_message(message)
