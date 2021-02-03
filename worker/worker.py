@@ -451,13 +451,13 @@ def registration(nsi_json, sliceName):
   LOG.info("Registration UE")
 
   # Change status
-  #db.update_status_slice_subnet("UNDER_REGISTRATION",nsi_json["sliceSubnet"], sliceName)
+  db.update_status_slice_subnet("UNDER_REGISTRATION",nsi_json["sliceSubnet"], sliceName)
   #TODO Order Registration
   dict_message={"name":"api", "id":"", "action":"registration","slice":sliceName,"subnet":nsi_json["sliceSubnet"]}
   #threading.Thread(target=client_ssm_thread,args=(dict_message,)).start()
   message = client_ssm_thread(dict_message)
   # Change status
-  #db.update_status_slice_subnet("FINISHED_REGISTRATION",nsi_json["sliceSubnet"], sliceName)
+  db.update_status_slice_subnet("FINISHED_REGISTRATION",nsi_json["sliceSubnet"], sliceName)
   return ({"message": message},202)
 
 ########################################## HANDOVER SECTION #######################################
@@ -467,15 +467,15 @@ def handover(nsi_json, sliceName):
   LOG.info("Handover UE")
 
   # Change status
-  #db.update_status_slice_subnet("UNDER_HANDOVER",nsi_json["sliceSubnetSrc"], sliceName)
-  #db.update_status_slice_subnet("UNDER_HANDOVER",nsi_json["sliceSubnetDst"], sliceName)
+  db.update_status_slice_subnet("UNDER_HANDOVER",nsi_json["sliceSubnetSrc"], sliceName)
+  db.update_status_slice_subnet("UNDER_HANDOVER",nsi_json["sliceSubnetDst"], sliceName)
   #TODO Order Handover
   dict_message={"name":"api", "id":"", "action":"handover","slice":sliceName,"subnetSrc":nsi_json["sliceSubnetSrc"],"subnetDst":nsi_json["sliceSubnetDst"]}
   #threading.Thread(target=client_ssm_thread,args=(dict_message,)).start()
   message = client_ssm_thread(dict_message)
   # Change status
-  #db.update_status_slice_subnet("FINISHED_HANDOVER",nsi_json["sliceSubnetSrc"], sliceName)
-  #db.update_status_slice_subnet("FINISHED_HANDOVER",nsi_json["sliceSubnetDst"], sliceName)
+  db.update_status_slice_subnet("FINISHED_HANDOVER",nsi_json["sliceSubnetSrc"], sliceName)
+  db.update_status_slice_subnet("FINISHED_HANDOVER",nsi_json["sliceSubnetDst"], sliceName)
   return ({"message": message},202)
 
 # Status options
@@ -485,6 +485,8 @@ def handover(nsi_json, sliceName):
 	CREATED,
 	ADDING,
   ADDED,
+  UNDER_REGISTRATION,
+  FINISHED_REGISTRATION,
   UNDER_HANDOVER,
   FINISHED_HANDOVER,
   REMOVING,
