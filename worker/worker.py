@@ -344,6 +344,14 @@ def nsi_placement(nsi_json, nst_json):
 
 # Does all the process to Create the Slice Subnet
 def create_slice_subnet(nsi_json,sliceName):
+
+  # TODO: For not give error when creating the subnet again
+  # If already exist this subnet return 202
+  slice_info=db.get_slice(sliceName)
+  if "sliceSubnetIds" in slice_info:
+    if nsi_json['sliceSubnetName'] in slice_info["sliceSubnetIds"]:
+      return ({},202)
+
   LOG.info("Create Slice Subnet")
 
   new_nsi_json = {}
