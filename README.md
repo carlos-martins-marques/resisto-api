@@ -54,8 +54,8 @@ Each SONATA component has its API definition, the next sub-setions present a bas
 |---|---|---|
 <!-- | CREATE A NETWORK SLICE IDENTIFIER  | POST  | /api/v1/ns  |
 | INSTANTIATE A NETWORK SLICE | PUT  | /api/v1/ns/`<nsiId>`/action/instantiate  |
-| RESQUEST THE INFORMATION OF A NETWORK SLICE INSTANTIATION  | GET  | /api/v1/ns/`<nsiId>`|
-| RESQUEST THE INFORMATION OF ALL NETWORK SLICE INSTANTIATIONS  | GET  | /api/v1/ns  |
+| REQUEST THE INFORMATION OF A NETWORK SLICE INSTANTIATION  | GET  | /api/v1/ns/`<nsiId>`|
+| REQUEST THE INFORMATION OF ALL NETWORK SLICE INSTANTIATIONS  | GET  | /api/v1/ns  |
 | TERMINATE A NETWORK SLICE INSTANTIATION  | PUT  | /api/v1/ns/`<nsiId>`/action/terminate| -->
 
 
