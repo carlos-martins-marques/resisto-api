@@ -242,7 +242,7 @@ class thread_ns_terminate(Thread):
             db.update_status_slice_subnet("DELETED",self.req['sliceName'],self.req['slice'])
           else:
             db.update_status_slice("DELETED",self.req['sliceName'])
-            db.del_slice(self.req['sliceName'])
+            #db.del_slice(self.req['sliceName'])
           break
     
         time.sleep(15)
