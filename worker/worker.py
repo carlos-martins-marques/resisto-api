@@ -242,6 +242,7 @@ class thread_ns_terminate(Thread):
             db.update_status_slice_subnet("DELETED",self.req['sliceName'],self.req['slice'])
           else:
             db.update_status_slice("DELETED",self.req['sliceName'])
+            db.del_slice(self.req['sliceName'])
           break
     
         time.sleep(15)
@@ -541,9 +542,14 @@ Return
 
 def get_slice_status(sliceName):
   LOG.info("Get Slice Status")
+  slice_status = {}
+
+  # Check if slice exists
+  all_slice_info = db.get_all_slices()
+  if not sliceName in all_slice_info:
+    return (slice_status,404)
 
   # Get status for a specific slice
-  slice_status = {}
   slice_info = db.get_slice(sliceName)
 
   if slice_info:
@@ -555,8 +561,7 @@ def get_slice_status(sliceName):
         slice_subnet_info={}
         slice_subnet_info["sliceSubnetName"]= slice_subnet_name
         slice_subnet_info["status"]= slice_info["sliceSubnetIds"][slice_subnet_name]["status"]
-        slice_status["sliceSubnetIds"].append(slice_subnet_info)
-
+        slice_status["sliceSubnetIds"].append(slice_subnet_info) 
 
   return (slice_status,200)
 
