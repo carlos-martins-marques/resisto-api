@@ -112,8 +112,8 @@ def registration(name):
   LOG.info("Request to registration according to the following: " + str(request.json))
   
   # validates the fields with uuids (if they are right UUIDv4 format), 400 Bad request / 202 ok
-  #registration = json_validator.validate_registration(request.json)
-  registration = ("", 200)
+  registration = json_validator.validate_registration(request.json)
+  #registration = ("", 200)
 
   if (registration[1] == 200):
     registration = worker.registration(request.json, name)  
@@ -126,8 +126,8 @@ def handover(name):
   LOG.info("Request to handover according to the following: " + str(request.json))
   
   # validates the fields with uuids (if they are right UUIDv4 format), 400 Bad request / 202 ok
-  #handover = json_validator.validate_handover(request.json)
-  handover = ("", 200)
+  handover = json_validator.validate_handover(request.json)
+  #handover = ("", 200)
 
   if (handover[1] == 200):
     handover = worker.handover(request.json, name)  
