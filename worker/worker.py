@@ -476,15 +476,15 @@ def handover(nsi_json, sliceName):
   LOG.info("Handover UE")
 
   # Change status
-  db.update_status_slice_subnet("UNDER_HANDOVER",nsi_json["sliceSubnetSrc"], sliceName)
-  db.update_status_slice_subnet("UNDER_HANDOVER",nsi_json["sliceSubnetDst"], sliceName)
+  db.update_status_slice_subnet("UNDER_HANDOVER_DISABLE",nsi_json["sliceSubnetSrc"], sliceName)
+  db.update_status_slice_subnet("UNDER_HANDOVER_ENABLE",nsi_json["sliceSubnetDst"], sliceName)
   #TODO Order Handover
   dict_message={"name":"api", "id":"", "action":"handover","slice":sliceName,"subnetSrc":nsi_json["sliceSubnetSrc"],"subnetDst":nsi_json["sliceSubnetDst"]}
   #threading.Thread(target=client_ssm_thread,args=(dict_message,)).start()
   message = client_ssm_thread(dict_message)
   # Change status
-  db.update_status_slice_subnet("FINISHED_HANDOVER",nsi_json["sliceSubnetSrc"], sliceName)
-  db.update_status_slice_subnet("FINISHED_HANDOVER",nsi_json["sliceSubnetDst"], sliceName)
+  db.update_status_slice_subnet("FINISHED_HANDOVER_DISABLE",nsi_json["sliceSubnetSrc"], sliceName)
+  db.update_status_slice_subnet("FINISHED_HANDOVER_ENABLE",nsi_json["sliceSubnetDst"], sliceName)
   return ({"message": message},202)
 
 # Status options

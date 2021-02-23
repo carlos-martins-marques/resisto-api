@@ -6,6 +6,7 @@ import time
 import asyncio
 import requests
 import os
+import paramiko
 
 LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.DEBUG)
@@ -21,6 +22,8 @@ ssm = 0
 maxSsm = 2 + access_ssm
 lock = asyncio.Lock()
 liveWebSockets = {}
+ueWebSockets = {}
+ue_id=2
 
 def getStatus(serviceId):
     status=''
@@ -54,7 +57,10 @@ class WSHandler(websocket.WebSocketHandler):
             if self == value:
                 liveWebSockets.pop(key)
                 break
-
+        for key, value in ueWebSockets.items():
+            if self == value:
+                ueWebSockets.pop(key)
+                break
     def check_origin(self, origin):
         return True
 
@@ -65,6 +71,7 @@ class WSHandler(websocket.WebSocketHandler):
         global data_u
         global ssm
         global ssmId
+        global ue_id
         LOG.info('message received:  %s' % message)
 
         messageDict = json.loads(message)
@@ -80,6 +87,9 @@ class WSHandler(websocket.WebSocketHandler):
             ssmId[id]=sfuuid
 
             liveWebSockets[sfuuid] = self
+            
+            if name == names[2]:
+                ueWebSockets[sfuuid] = self
 
             # only for test case
             #toSend = messageDict
@@ -171,19 +181,37 @@ class WSHandler(websocket.WebSocketHandler):
                 data_c={}
                 data_u={}
                 ssmId={}
+                ue_id=2
 
         # registration
         elif action == actions[3]:
+            #TODO script to activate proxy arp.
+            # url:193.136.92.183 u:altice p:ecitla
+            #/bin/bash /opt/stack/script_arp_proxy.sh
+            client = paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.connect('193.136.92.183', username='altice', password='ecitla')
+
+            stdin, stdout, stderr = client.exec_command('/bin/bash /opt/stack/script_arp_proxy.sh')
+
+            for line in stdout:
+                LOG.info(line.strip('\n'))
+
+            client.close()
+
             #TODO 
-            for sfuuid in liveWebSockets:
+            for sfuuid in ueWebSockets:
                 
                 toSend = { "name": "ue", "id": sfuuid, "action": "registration"}
                 toSendJson = json.dumps(toSend)
                 LOG.info(name + ": send new message to UE SSM" + toSendJson)
 
-                liveWebSockets[sfuuid].write_message(toSendJson)
+                ueWebSockets[sfuuid].write_message(toSendJson)
             # Get the sfuuid of UE and send the message
             #liveWebSockets[sfuuid].write_message(message)
+
+            # Estimate time for the registration be applied.
+            time.sleep(2)
 
             toSend = { "name": name, "id": id, "action": action, 
                     "message": "Registration OK"}
@@ -195,16 +223,23 @@ class WSHandler(websocket.WebSocketHandler):
         # handover
         elif action == actions[4]:
             #TODO 
-            for sfuuid in liveWebSockets:
+            for sfuuid in ueWebSockets:
                 
                 toSend = { "name": "ue", "id": sfuuid, "action": "handover", 
-                    "edge": "2"}
+                    "edge": str(ue_id)}
                 toSendJson = json.dumps(toSend)
                 LOG.info(name + ": send new message to UE SSM" + toSendJson)
 
-                liveWebSockets[sfuuid].write_message(toSendJson)
+                ueWebSockets[sfuuid].write_message(toSendJson)
             # Get the sfuuid of UE and send the message
             #liveWebSockets[sfuuid].write_message(message)
+            if ue_id == 2:
+                ue_id = 1
+            else:
+                ue_id = 2
+
+            # Estimate time for the handover be applied.
+            time.sleep(2)
 
             toSend = { "name": name, "id": id, "action": action, 
                     "message": "Handover OK"}
