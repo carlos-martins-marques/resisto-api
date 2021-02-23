@@ -54,6 +54,7 @@ ADD . /resisto_api
 WORKDIR /resisto_api
 
 #runing the python script to prepare the docker environment
+RUN pip3 install paramiko
 RUN python setup.py install
 
 #starting the slice-server/service
