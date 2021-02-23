@@ -210,9 +210,6 @@ class WSHandler(websocket.WebSocketHandler):
             # Get the sfuuid of UE and send the message
             #liveWebSockets[sfuuid].write_message(message)
 
-            # Estimate time for the registration be applied.
-            time.sleep(2)
-
             toSend = { "name": name, "id": id, "action": action, 
                     "message": "Registration OK"}
             LOG.info(name + ": tosend = " + str(toSend))
