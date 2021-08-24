@@ -108,7 +108,7 @@ class WSHandler(websocket.WebSocketHandler):
                     for vnf in data_m:
                         for interface in vnf["ifdata"]:
                             interface.update({'id':id})
-                            if vnf["name"] in ["vnf-open5gcorer5-gnb", "vnf-open5gcorer5-upfe"]:
+                            if vnf["name"] in ["vnf-open5gcorer5-gnb", "vnf-open5gcorer5-upfe", "vnf-open5gcorer5-igw"]:
                                 interface["ifid"] = interface["ifid"][0:5].replace("1",str(order)) + interface["ifid"][5:]
 
                     data_a[sfuuid]=data_m
